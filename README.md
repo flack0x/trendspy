@@ -13,12 +13,12 @@
 
 ## ✨ Features
 
-- 🔥 **"Trending Now" data** - Real-time trending searches from Google
+- 🔥 **"Trending now" data** - Real-time trending searches from Google Trends
 - 🌍 **114 countries** supported
 - 🗺️ **51 US states** + sub-regions
 - 📊 **20 categories** (sports, entertainment, technology, etc.)
 - ⏰ **4 time periods** (4h, 24h, 48h, 7 days)
-- 📈 **Updated every ~1 minute** - Google refreshes trending data frequently
+- 📈 **Frequent updates** - RSS updates ~9 times/hour, CSV exports ~every minute
 - 🎯 **Active trends filtering** - Show only rising trends
 - 🔄 **4 sort options** (relevance, title, volume, recency)
 - 📦 **Easy installation** - just `pip install trendspy`
@@ -68,9 +68,15 @@ file_path = download_google_trends_csv(
 
 ### What Data Source?
 
-trendspy fetches data from Google's **"Trending Now"** section - real-time trending searches updated approximately every minute.
+trendspy fetches data from Google Trends **"Trending now"** page (trends.google.com/trending) - NOT the "Explore" page.
 
-> **Note:** This is different from the "Explore" page on Google Trends. Support for "Explore" page data (historical trends, comparison charts, etc.) is planned for v0.2.0+.
+**Technical Details:**
+- **Data Source:** Google Trends RSS feed
+- **Page:** "Trending now" tab on Google Trends
+- **RSS Update Frequency:** ~9 times per hour (approximately every 5-7 minutes)
+- **CSV Export Frequency:** Updates almost every minute (when Google publishes new data)
+
+> **Note:** This package accesses the real-time "Trending now" page data. Support for the "Explore" page (historical trends, comparison charts, interest over time) is planned for v0.2.0+.
 
 ### CSV Output Format
 
@@ -174,7 +180,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 ## 🗺️ Roadmap
 
 ### v0.1.0 (Current)
-- ✅ "Trending Now" data downloads
+- ✅ "Trending now" data downloads (RSS feed)
 - ✅ 188,000+ configuration options
 - ✅ Python package structure
 - ✅ 114 countries + 51 US states
