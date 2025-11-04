@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-11-04
+
+### Added
+- **RSS Feed Support** - New `download_google_trends_rss()` function for fast, rich media data access
+  - 50x faster than CSV (0.2s vs 10s)
+  - News articles with headlines, URLs, and sources (3-5 per trend)
+  - Trend images with attribution
+  - 4 output formats: dict, dataframe, json, csv
+  - Perfect for real-time monitoring, journalism, and qualitative research
+- Comprehensive documentation comparing RSS vs CSV data sources
+- Research use cases and workflow examples for both data sources
+
+### Changed
+- **Focused scope** - Removed Explore page functionality to focus exclusively on real-time "Trending Now" data
+- Streamlined codebase by removing experimental features
+- Updated API surface - now provides TWO core functions: `download_google_trends_csv()` and `download_google_trends_rss()`
+- Updated all documentation to reflect dual data source approach
+- Cleaner project structure
+
+### Removed
+- Explore page historical data functionality (experimental)
+- `download_explore_data()` function
+- `trendspyg/explorer.py` and `trendspyg/explorer_v2.py` modules
+- Playwright optional dependency
+- Explore-specific configuration constants (`EXPLORE_TIME_PERIODS`, `SEARCH_TYPES`, `DATA_SECTIONS`)
+
+### Why This Change?
+This release refocuses the library on its core strength: **real-time trending data**. The Explore page functionality was experimental and added significant complexity. Users needing historical trends can access Google Trends directly or use specialized tools.
+
+**RSS Addition:** Researchers need both fast monitoring (RSS) and comprehensive datasets (CSV) for different research methodologies. RSS provides qualitative data (news context, visual content) while CSV provides quantitative data (large datasets, statistical analysis). Together they form a complete toolkit.
+
 ## [0.1.4] - 2025-11-03
 
 ### Added
@@ -100,7 +131,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Real-time monitoring capabilities
 - Best-in-class documentation
 
-[Unreleased]: https://github.com/flack0x/trendspyg/compare/v0.1.4...HEAD
+[Unreleased]: https://github.com/flack0x/trendspyg/compare/v0.1.5...HEAD
+[0.1.5]: https://github.com/flack0x/trendspyg/compare/v0.1.4...v0.1.5
 [0.1.4]: https://github.com/flack0x/trendspyg/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/flack0x/trendspyg/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/flack0x/trendspyg/compare/v0.1.1...v0.1.2

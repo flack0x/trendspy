@@ -4,8 +4,9 @@ Contains all available options for Google Trends data:
 - 114 countries
 - 51 US states
 - 20 categories
-- 4 time periods
-- 4 sort options
+- 4 time periods (Trending Now)
+- 4 sort options (Trending Now)
+- 4 output formats (CSV, JSON, Parquet, DataFrame)
 """
 
 # Category mapping (internal Google names)

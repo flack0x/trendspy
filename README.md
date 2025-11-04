@@ -3,7 +3,7 @@
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Free, open-source Python library for Google Trends data** - a modern alternative to the archived pytrends with **188,000+ configuration options**.
+**Free, open-source Python library for real-time Google Trends data** - a modern alternative to the archived pytrends with **188,000+ configuration options**.
 
 > **Note:** pytrends was archived on April 17, 2025 with no replacement. trendspyg is built to fill this gap with enhanced features and active maintenance.
 
@@ -11,6 +11,7 @@
 
 ## ✨ Features
 
+### Trending Now (Real-time Data)
 - 🔥 **"Trending now" data** - Real-time trending searches from Google Trends
 - 🌍 **114 countries** supported
 - 🗺️ **51 US states** + sub-regions
@@ -19,8 +20,8 @@
 - 📈 **Frequent updates** - RSS updates ~9 times/hour, CSV exports ~every minute
 - 🎯 **Active trends filtering** - Show only rising trends
 - 🔄 **4 sort options** (relevance, title, volume, recency)
-- 💾 **4 output formats** - CSV, JSON, Parquet, DataFrame (v0.1.4+)
-- 🎨 **Full type hints** - Complete IDE support with IntelliSense (v0.1.4+)
+- 💾 **4 output formats** - CSV, JSON, Parquet, DataFrame
+- 🎨 **Full type hints** - Complete IDE support with IntelliSense
 - 📦 **Easy installation** - just `pip install trendspyg`
 - 🆓 **100% free** and open-source
 
@@ -36,46 +37,89 @@
 pip install trendspyg
 ```
 
-### Prerequisites
+### Two Data Sources - Choose Your Path
 
-**Required:**
-- **Chrome Browser** must be installed on your system
-  - Download: [https://www.google.com/chrome/](https://www.google.com/chrome/)
-  - ChromeDriver is automatically managed by Selenium
-  - trendspyg uses browser automation to access Google Trends data
+trendspyg provides **two complementary ways** to access Google Trends data:
 
-**System Requirements:**
-- Python 3.8 or higher
-- Active internet connection
-- Permissions to download files
+#### 🚀 **Fast Path: RSS Feed** (Recommended for most users)
+- ⚡ **0.2 seconds** - 50x faster than CSV
+- 📰 **Rich media**: News articles, headlines, images
+- 🔄 **Perfect for**: Real-time monitoring, journalism, qualitative research
+- ⚠️ **Limitation**: ~10-20 trends, no filtering
 
-### Basic Usage
+#### 📊 **Full Path: CSV Export**
+- 📈 **480 trends** - Comprehensive dataset
+- ⏱️ **Time filtering**: 4h, 24h, 48h, 7 days
+- 🎯 **Category filtering**: Sports, tech, etc.
+- 🕐 **~10 seconds** - Requires browser automation
+- 🎓 **Perfect for**: Statistical analysis, research papers, large datasets
+
+---
+
+### Quick Examples
+
+#### RSS - Fast & Rich Media (0.2s)
 
 ```python
-from trendspyg.downloader import download_google_trends_csv
+from trendspyg import download_google_trends_rss
 
-# Download trends (default: US, past 24 hours, all categories)
-file_path = download_google_trends_csv()
-# Returns: "trends_US_24h_all_20251103-041108.csv"
+# Get current trends with news articles & images
+trends = download_google_trends_rss(geo='US')
+
+# Access rich data
+for trend in trends[:3]:
+    print(f"\n{trend['trend']} ({trend['traffic']})")
+    print(f"  📰 {len(trend['news_articles'])} news articles")
+    print(f"  📸 Image: {trend['image']['source']}")
+    if trend['news_articles']:
+        print(f"  Headline: {trend['news_articles'][0]['headline']}")
 ```
 
-### Advanced Usage
+**Output:**
+```
+christine donohue (500+)
+  📰 3 news articles
+  📸 Image: Fox News
+  Headline: What to expect for the Nov. 4 election in Pennsylvania
+
+spot stock (200+)
+  📰 3 news articles
+  📸 Image: Yahoo Finance
+  Headline: SPOT Stock Alert: Why Shares of Spotify Are Moving Today
+```
+
+#### CSV - Comprehensive & Filtered (10s)
 
 ```python
-from trendspyg.downloader import download_google_trends_csv
+from trendspyg import download_google_trends_csv
 
-# California, past 7 days, sports only, sorted by volume
-file_path = download_google_trends_csv(
+# California, past 7 days, sports only, DataFrame format
+df = download_google_trends_csv(
     geo='US-CA',          # State-level support!
     hours=168,            # 7 days
     category='sports',    # Filter by category
     active_only=True,     # Only rising trends
-    sort_by='volume'      # Sort by popularity
+    output_format='dataframe'  # pandas DataFrame
 )
-# Returns path to downloaded CSV file
+
+print(f"Found {len(df)} sports trends in California")
+# Found 480 sports trends in California
 ```
 
-### Multiple Output Formats (v0.1.4+)
+---
+
+### Prerequisites
+
+**For RSS (Fast Path):**
+- ✅ Python 3.8+
+- ✅ Internet connection
+- ✅ That's it!
+
+**For CSV (Full Path) - Additionally Requires:**
+- 🌐 **Chrome Browser** - [Download here](https://www.google.com/chrome/)
+- 📦 ChromeDriver (auto-managed by Selenium)
+
+### Multiple Output Formats
 
 Choose from **4 output formats** to match your workflow:
 
@@ -111,19 +155,221 @@ pip install trendspyg[analysis]  # Includes pandas + pyarrow
 
 ---
 
-## 📊 Data Format & Output
+## 📊 Data Sources Explained
 
-### What Data Source?
+### Choose Your Data Source
 
-trendspyg fetches data from Google Trends **"Trending now"** page (trends.google.com/trending) - NOT the "Explore" page.
+trendspyg provides **both RSS and CSV** - they're complementary, not competing!
 
-**Technical Details:**
-- **Data Source:** Google Trends RSS feed
-- **Page:** "Trending now" tab on Google Trends
-- **RSS Update Frequency:** ~9 times per hour (approximately every 5-7 minutes)
-- **CSV Export Frequency:** Updates almost every minute (when Google publishes new data)
+| Feature | RSS Feed 🚀 | CSV Export 📊 |
+|---------|-------------|---------------|
+| **Speed** | 0.2 seconds | ~10 seconds |
+| **Trends Count** | ~10-20 | 480 |
+| **News Articles** | ✅ 3-5 per trend | ❌ No |
+| **Article Headlines** | ✅ Yes | ❌ No |
+| **Article URLs** | ✅ Yes | ❌ No |
+| **Images** | ✅ Trend images | ❌ No |
+| **News Sources** | ✅ Yes (e.g., "CNN", "BBC") | ❌ No |
+| **Start/End Times** | ❌ No | ✅ Yes |
+| **Related Searches** | ❌ No | ✅ Yes (comma-separated) |
+| **Time Filtering** | ❌ No (current only) | ✅ Yes (4h/24h/48h/7d) |
+| **Category Filter** | ❌ No | ✅ Yes (20 categories) |
+| **Active-Only Filter** | ❌ No | ✅ Yes |
+| **Sort Options** | ❌ No | ✅ Yes (4 options) |
+| **Chrome Required** | ❌ No | ✅ Yes |
+| **Best For** | Journalism, monitoring | Research, statistics |
 
-> **Note:** This package accesses the real-time "Trending now" page data. Support for the "Explore" page (historical trends, comparison charts, interest over time) is planned for v0.2.0+.
+---
+
+### What Data Each Source Provides
+
+#### 📰 RSS Feed Data Structure
+
+```python
+{
+    "trend": "xrp",
+    "traffic": "200+",
+    "published": "2025-11-04 04:00:00",
+    "image": {
+        "url": "https://encrypted-tbn0.gstatic.com/...",
+        "source": "CoinDesk"  # Image source
+    },
+    "news_articles": [
+        {
+            "headline": "XRP Price News: Ripple-Linked Token Approaches 'Death Cross'",
+            "url": "https://www.coindesk.com/markets/2025/11/04/xrp-nears-death-cross",
+            "source": "CoinDesk",
+            "image": "https://encrypted-tbn0.gstatic.com/..."
+        },
+        {
+            "headline": "Why XRP Is Going Down? Crypto Falls Today...",
+            "url": "https://www.financemagnates.com/...",
+            "source": "Finance Magnates",
+            "image": "https://..."
+        }
+        // ... 3-5 articles per trend
+    ],
+    "explore_link": "https://trends.google.com/trends/explore?q=xrp"
+}
+```
+
+**Why RSS is Valuable for Researchers:**
+- ✅ **Qualitative Analysis**: Read actual news articles explaining trends
+- ✅ **Source Validation**: Verify trends with credible news sources
+- ✅ **Visual Content**: Images for presentations/papers
+- ✅ **Fast Data Collection**: 0.2s enables frequent polling (every 5 min)
+- ✅ **Citation Material**: Article URLs as references
+
+---
+
+#### 📈 CSV Export Data Structure
+
+```csv
+"Trends","Search volume","Started","Ended","Trend breakdown","Explore link"
+"cowboys","2M+","November 4, 2025 at 1:50:00 AM UTC+2",,"cowboys,dallas cowboys,cowboys game,jacoby brissett,...","https://..."
+```
+
+**CSV Columns:**
+- **Trends**: Main search keyword
+- **Search volume**: Popularity tier (50K+, 100K+, 200K+, 500K+, 1M+, 2M+)
+- **Started**: When trend began trending (timestamp)
+- **Ended**: When trend stopped (usually empty for active trends)
+- **Trend breakdown**: Related search terms (comma-separated list)
+- **Explore link**: Direct Google Trends analysis URL
+
+**Why CSV is Valuable for Researchers:**
+- ✅ **Quantitative Analysis**: 480 trends for statistical significance
+- ✅ **Historical Context**: Start/end times for temporal analysis
+- ✅ **Time-based Studies**: Filter by 4h/24h/48h/7d periods
+- ✅ **Semantic Analysis**: Related searches reveal topic clusters
+- ✅ **Large Datasets**: Sufficient N for statistical tests
+
+---
+
+### 🎓 Research Use Cases - When to Use Each
+
+#### Use RSS When You Need:
+
+**1. Journalism & Breaking News**
+```python
+# Monitor trends every 5 minutes for breaking stories
+trends = download_google_trends_rss('US')
+for trend in trends:
+    if trend['traffic'].startswith('1M'):  # Major spike
+        print(f"🚨 ALERT: {trend['trend']}")
+        print(f"   Source: {trend['news_articles'][0]['source']}")
+        print(f"   Read: {trend['news_articles'][0]['url']}")
+```
+
+**2. Qualitative Research - Content Analysis**
+```python
+# Collect news articles about trending topics for discourse analysis
+import pandas as pd
+
+trends = download_google_trends_rss('US', output_format='dataframe')
+
+# Analyze news sources
+for idx, row in trends.iterrows():
+    articles = row['news_articles']
+    sources = [a['source'] for a in articles]
+    print(f"{row['trend']}: Coverage by {', '.join(sources)}")
+```
+
+**3. Visual Presentations**
+```python
+# Get images for your research presentation
+trends = download_google_trends_rss('US')
+
+# Download trend images
+for trend in trends[:5]:
+    image_url = trend['image']['url']
+    image_source = trend['image']['source']
+    # Use in slides with proper attribution
+```
+
+---
+
+#### Use CSV When You Need:
+
+**1. Statistical Analysis - Academic Papers**
+```python
+# Large dataset for statistical significance
+df = download_google_trends_csv(
+    geo='US',
+    hours=168,  # Past week
+    output_format='dataframe'
+)
+
+print(f"N = {len(df)} trends")  # N = 480
+
+# Analyze search volume distribution
+import matplotlib.pyplot as plt
+df['search_volume'].value_counts().plot(kind='bar')
+plt.title('Search Volume Distribution (n=480)')
+plt.show()
+```
+
+**2. Time-Series Studies**
+```python
+# Study how trends change over different time periods
+periods = [4, 24, 48, 168]  # 4h, 1d, 2d, 7d
+
+for period in periods:
+    df = download_google_trends_csv(
+        geo='US',
+        hours=period,
+        category='health',
+        output_format='dataframe'
+    )
+    print(f"{period}h: {len(df)} health trends")
+    # Analyze temporal patterns
+```
+
+**3. Semantic Network Analysis**
+```python
+# Build topic networks from related searches
+df = download_google_trends_csv('US', output_format='dataframe')
+
+# Extract related terms
+for idx, row in df.iterrows():
+    main_term = row['Trends']
+    related = row['Trend breakdown'].split(',')
+    # Build graph: main_term -> related terms
+    # Use for network visualization
+```
+
+---
+
+#### Use BOTH for Mixed-Methods Research
+
+**Example: "Why did Bitcoin spike?"**
+
+```python
+# Step 1: RSS - Get qualitative context (fast)
+trends = download_google_trends_rss('US')
+bitcoin_trend = [t for t in trends if 'bitcoin' in t['trend'].lower()][0]
+
+print("Qualitative Context:")
+for article in bitcoin_trend['news_articles']:
+    print(f"- {article['headline']}")
+    print(f"  Source: {article['source']}")
+
+# Step 2: CSV - Get quantitative data (comprehensive)
+df = download_google_trends_csv(
+    geo='US',
+    hours=168,
+    category='all',
+    output_format='dataframe'
+)
+
+crypto_trends = df[df['Trends'].str.contains('bitcoin|crypto|btc', case=False)]
+print(f"\nQuantitative Data: {len(crypto_trends)} crypto-related trends")
+print(f"Related searches: {crypto_trends.iloc[0]['Trend breakdown']}")
+
+# Result: Complete picture with both narrative (RSS) and numbers (CSV)
+```
+
+---
 
 ### CSV Output Format
 
@@ -289,26 +535,26 @@ Check:
 
 ## 🗺️ Roadmap
 
-### v0.1.0 (Current)
-- ✅ "Trending now" data downloads (RSS feed)
+### v0.2.0 (Current)
+- ✅ "Trending now" data downloads (RSS feed + CSV export)
 - ✅ 188,000+ configuration options
-- ✅ Python package structure
 - ✅ 114 countries + 51 US states
-- ✅ CSV output format
+- ✅ 4 output formats (CSV, JSON, Parquet, DataFrame)
+- ✅ Full type hints
+- ✅ Active trends filtering
 
-### v0.2.0 (Coming Soon)
+### v0.3.0 (Coming Soon)
 - [ ] CLI tool (`trendspyg download --geo US-CA`)
-- [ ] Google Trends "Explore" page data (historical trends, comparisons)
 - [ ] Real-time monitoring mode
 - [ ] Batch downloads
 - [ ] Enhanced error handling
-
-### v0.3.0 (Future)
-- [ ] Pandas integration
-- [ ] Export formats (JSON, Excel, Parquet)
 - [ ] Caching layer
+
+### v0.4.0 (Future)
 - [ ] Async support
 - [ ] Data visualization helpers
+- [ ] Historical data archiving
+- [ ] Advanced filtering options
 
 ---
 

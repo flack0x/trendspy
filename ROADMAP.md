@@ -1,7 +1,7 @@
 # trendspyg - Development Roadmap
 
-**Current Version:** v0.1.0
-**Status:** Active Development
+**Current Version:** v0.2.0
+**Status:** Active Development - Focused Scope
 
 ---
 
@@ -11,7 +11,35 @@ Build a free, open-source Python library for accessing Google Trends data - a mo
 
 ---
 
-## ✅ v0.1.0 - Foundation (Current Release)
+## ✅ v0.2.0 - Focused Scope (Current Release)
+
+**Status:** Released - November 4, 2025
+
+### Changes
+- ✅ **Refocused on real-time data** - Removed Explore page functionality
+- ✅ **Streamlined codebase** - Deleted experimental features
+- ✅ **Simplified API** - Single core function `download_google_trends_csv()`
+- ✅ **Removed Playwright dependency** - Selenium only for "Trending Now"
+- ✅ **Updated documentation** - Clear focus on real-time trends
+
+### Rationale
+Focusing on what trendspyg does best: **real-time "Trending Now" data**. This makes the library simpler, more maintainable, and easier to use.
+
+---
+
+## ✅ v0.1.4 - Type Safety & Output Formats
+
+**Status:** Released - November 3, 2025
+
+### Features
+- ✅ Complete type hints across codebase (PEP 484 compliant)
+- ✅ Multiple output formats: CSV, JSON, Parquet, DataFrame
+- ✅ Optional dependencies for analysis features
+- ✅ Mypy strict mode configuration
+
+---
+
+## ✅ v0.1.0 - v0.1.3 - Foundation
 
 **Status:** Released - November 3, 2025
 
@@ -24,32 +52,25 @@ Build a free, open-source Python library for accessing Google Trends data - a mo
   - 4 time periods (4h, 24h, 48h, 7 days)
 - ✅ Active trends filtering
 - ✅ 4 sort options (relevance, title, volume, recency)
-- ✅ CSV output format
-- ✅ Python package structure
-- ✅ Comprehensive documentation
-- ✅ MIT License
+- ✅ Input validation with helpful error messages
+- ✅ Retry logic with exponential backoff
+- ✅ Custom exception hierarchy
 
 ### Technical
 - Python 3.8+ support
 - Selenium-based browser automation
 - Headless mode support
-- Custom exception hierarchy
 - Automatic file naming with timestamps
 
 ---
 
-## 🚧 v0.2.0 - Enhanced Features (Coming Soon)
+## 🚧 v0.3.0 - Enhanced Features (Coming Soon)
 
 **Target:** Q1 2026
-**Focus:** Usability & Expansion
+**Focus:** Usability & Monitoring
 
 ### Planned Features
 - [ ] CLI tool (`trendspyg download --geo US-CA --category sports`)
-- [ ] Google Trends "Explore" page data
-  - Historical trends
-  - Comparison charts
-  - Interest over time
-  - Regional interest
 - [ ] Real-time monitoring mode
   - Continuous polling
   - Change detection
@@ -58,35 +79,21 @@ Build a free, open-source Python library for accessing Google Trends data - a mo
   - Multiple countries at once
   - Scheduled downloads
   - Parallel processing
-- [ ] Enhanced error handling
-  - Better error messages
-  - Retry logic
-  - Rate limit detection
 
 ### Quality Improvements
-- [ ] Comprehensive test suite
 - [ ] CI/CD pipeline
 - [ ] Code coverage > 80%
-- [ ] Type hints throughout
 - [ ] Performance optimizations
+- [ ] More comprehensive test suite
 
 ---
 
-## 🔮 v0.3.0 - Integrations & Export (Future)
+## 🔮 v0.4.0 - Advanced Features (Future)
 
 **Target:** Q2 2026
-**Focus:** Data Analysis Integration
+**Focus:** Performance & Developer Experience
 
 ### Planned Features
-- [ ] Pandas DataFrame integration
-  - Direct DataFrame output
-  - Easy data manipulation
-  - Built-in analysis helpers
-- [ ] Multiple export formats
-  - JSON export
-  - Excel/XLSX export
-  - Parquet export
-  - SQLite export
 - [ ] Caching layer
   - Local cache for repeated queries
   - Configurable cache duration
@@ -95,12 +102,17 @@ Build a free, open-source Python library for accessing Google Trends data - a mo
   - asyncio-compatible API
   - Concurrent downloads
   - Better performance for batch operations
+- [ ] Additional export formats
+  - Excel/XLSX export
+  - SQLite export
+  - Direct database integration
 
 ### Developer Experience
 - [ ] Plugin system
 - [ ] Custom data processors
 - [ ] Hooks for pre/post download
 - [ ] Extensive examples library
+- [ ] Data analysis helpers (built on top of DataFrame output)
 
 ---
 

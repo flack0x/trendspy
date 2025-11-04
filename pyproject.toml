@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "trendspyg"
-version = "0.1.4"
-description = "Free, open-source Python library for Google Trends data - pytrends alternative with 188K+ configuration options"
+version = "0.2.0"
+description = "Free, open-source Python library for real-time Google Trends data with time filtering - pytrends alternative with 188K+ configurations"
 readme = "README.md"
 authors = [
     {name = "flack0x", email = "your-email@example.com"}
@@ -111,5 +111,6 @@ show_error_codes = true
 module = [
     "selenium.*",
     "pandas.*",
+    "playwright.*",
 ]
 ignore_missing_imports = true
